@@ -1,11 +1,5 @@
-# M
-# E
-# R
-# N
+# M: MongoDB
+# E: Express
+# R: React
+# N: Node
 
-
-## API
-### Node + Express 
-### MongoDB (Database) + Moogose (ODM)
-
-## FRONTEND
