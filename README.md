@@ -3,3 +3,4 @@
 # R: React
 # N: Node
 
+# JasonWebToken authentication (JWT)
