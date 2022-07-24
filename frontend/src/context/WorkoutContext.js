@@ -13,6 +13,11 @@ export const workoutsReducer = (state, action) => {
         workouts: [action.payload, ...state.workouts],
       };
 
+    case "DELETE_WORKOUT":
+      return {
+        workouts: state.workouts.filter((w) => w._id !== action.payload._id), //removing from local database (context), so i dont need to call all workout from db again
+      };
+
     default:
       return state;
   }
