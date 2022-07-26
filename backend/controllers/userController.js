@@ -9,8 +9,11 @@ const createToken = (_id) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const { token, user } = await User.signin(email, password); //static method
-    res.status(200).json({ email, user, token });
+    const user = await User.login(email, password); //static method
+
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

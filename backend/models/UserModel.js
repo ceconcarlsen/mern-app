@@ -17,24 +17,25 @@ const userSchema = new Schema({
 });
 
 //static signup method
-userSchema.statics.signin = async function (email, password) {
+userSchema.statics.login = async function (email, password) {
   //validation
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
-  if (!validator.isEmail(email)) {
-    throw Error("Email is not valid");
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("Incorrect email");
   }
 
-  const exists = await this.findOne({ email });
+  const match = await bcrypt.compare(password, user.password);
 
-  if (exists) {
-    throw Error("Email does not exists");
+  if (!match) {
+    throw Error("Incorrect password");
   }
 
-  const user = await this.findOne({ email, password });
-
-  return { user };
+  return user;
 };
 
 //static signup method
