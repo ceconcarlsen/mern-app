@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutContext();
+  const id = useId();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
@@ -13,59 +14,60 @@ const WorkoutForm = () => {
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    const workout = { title, load, reps };
+    const workout = {
+      _id: id,
+      title,
+      load,
+      reps,
+      createdAt: new Date(),
+    };
 
-    const response = await fetch("/api/workouts", {
-      method: "POST",
-      body: JSON.stringify(workout),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    dispatch({
+      type: "CREATE_WORKOUT",
+      payload: workout,
     });
 
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-      setEmptyFields(json.emptyFields);
-    } else {
-      setTitle("");
-      setLoad("");
-      setReps("");
-      setError(null);
-      setEmptyFields([]);
-      dispatch({
-        type: "CREATE_WORKOUT",
-        payload: json,
-      });
-    }
+    // if (!response.ok) {
+    //   setError(json.error);
+    //   setEmptyFields(json.emptyFields);
+    // } else {
+    //   setTitle("");
+    //   setLoad("");
+    //   setReps("");
+    //   setError(null);
+    //   setEmptyFields([]);
+    //   dispatch({
+    //     type: "CREATE_WORKOUT",
+    //     payload: json,
+    //   });
+    // }
   };
 
   return (
     <form className="create" onSubmit={onFormSubmit}>
-      <h3>Add a New Workout</h3>
-      <label>Exercise title</label>
+      <h3>Adicionar treino</h3>
+      <label>Título do exercício</label>
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className={emptyFields.includes("title") ? "error" : ""}
       />
-      <label>Load (in KG):</label>
+      <label>Peso (em KG):</label>
       <input
         type="number"
         value={load}
         onChange={(e) => setLoad(e.target.value)}
         className={emptyFields.includes("load") ? "error" : ""}
       />
-      <label>Number of Reps:</label>
+      <label>Número de repetições:</label>
       <input
         type="number"
         value={reps}
         onChange={(e) => setReps(e.target.value)}
         className={emptyFields.includes("reps") ? "error" : ""}
       />
-      <button type="submit">Create</button>
+      <button type="submit">Criar</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
