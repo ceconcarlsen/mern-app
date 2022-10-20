@@ -7,21 +7,21 @@ import WorkoutForm from "../components/WorkoutForm";
 const Home = () => {
   const { workouts, dispatch } = useWorkoutContext();
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts"); //can use like this cause i defined a proxy at package.json (fixes CORS error)
-      const json = await response.json();
+  // useEffect(() => {
+  //   const fetchWorkouts = async () => {
+  //     const response = await fetch("/api/workouts"); //can use like this cause i defined a proxy at package.json (fixes CORS error)
+  //     const json = await response.json();
 
-      if (response.ok) {
-        dispatch({
-          type: "SET_WORKOUTS",
-          payload: json,
-        });
-      }
-    };
+  //     if (response.ok) {
+  //       dispatch({
+  //         type: "SET_WORKOUTS",
+  //         payload: json,
+  //       });
+  //     }
+  //   };
 
-    fetchWorkouts();
-  }, [dispatch]);
+  //   fetchWorkouts();
+  // }, [dispatch]);
 
   return (
     <div className="home">
