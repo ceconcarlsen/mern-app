@@ -1,21 +1,19 @@
-import { useState, useId } from "react";
+import { useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
+import { v4 as uuidv4 } from "uuid";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutContext();
-  const id = useId();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
-  const [error, setError] = useState(null);
-  const [emptyFields, setEmptyFields] = useState([]);
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
     const workout = {
-      _id: id,
+      _id: uuidv4(),
       title,
       load,
       reps,
@@ -27,20 +25,9 @@ const WorkoutForm = () => {
       payload: workout,
     });
 
-    // if (!response.ok) {
-    //   setError(json.error);
-    //   setEmptyFields(json.emptyFields);
-    // } else {
-    //   setTitle("");
-    //   setLoad("");
-    //   setReps("");
-    //   setError(null);
-    //   setEmptyFields([]);
-    //   dispatch({
-    //     type: "CREATE_WORKOUT",
-    //     payload: json,
-    //   });
-    // }
+    setTitle("");
+    setLoad("");
+    setReps("");
   };
 
   return (
@@ -51,24 +38,23 @@ const WorkoutForm = () => {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className={emptyFields.includes("title") ? "error" : ""}
+        className={"title"}
       />
       <label>Peso (em KG):</label>
       <input
         type="number"
         value={load}
         onChange={(e) => setLoad(e.target.value)}
-        className={emptyFields.includes("load") ? "error" : ""}
+        className="load"
       />
       <label>Número de repetições:</label>
       <input
         type="number"
         value={reps}
         onChange={(e) => setReps(e.target.value)}
-        className={emptyFields.includes("reps") ? "error" : ""}
+        className="reps"
       />
       <button type="submit">Criar</button>
-      {error && <div className="error">{error}</div>}
     </form>
   );
 };
